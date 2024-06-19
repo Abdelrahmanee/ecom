@@ -13,19 +13,8 @@ export default function Cart() {
     const [cartData, setCartData] = useState(null);
     const [isLoading, setIsLoading] = useState(false)
 
-    const { cartId,getLoggedUserCart, removeItem, updateCount, clearCart,setCount , count} = useContext(CartContext)
+    const { cartId, getLoggedUserCart, removeItem, updateCount, clearCart, setCount, count } = useContext(CartContext)
 
-    async function userCart() {
-        setIsLoading(true)
-        const { data } = await getLoggedUserCart();
-        setCartData(data)
-
-        console.log(data);
-        
-        setIsLoading(false)
-
-        // console.log(cartData);
-    }
 
     async function removeCartItem(item_id) {
 
@@ -49,7 +38,7 @@ export default function Cart() {
             if (result.isConfirmed) {
                 const { data } = await removeItem(item_id);
                 setCartData(data)
-                localStorage.setItem('numberOfCartItems' , count-1)
+                localStorage.setItem('numberOfCartItems', count - 1)
                 setCount(localStorage.getItem('numberOfCartItems'))
                 swalWithBootstrapButtons.fire({
                     title: "Deleted!",
@@ -83,7 +72,7 @@ export default function Cart() {
             if (result.isConfirmed) {
                 const { data } = await clearCart();
                 setCartData(data)
-                localStorage.setItem('numberOfCartItems' , 0)
+                localStorage.setItem('numberOfCartItems', 0)
                 setCount(localStorage.getItem('numberOfCartItems'))
                 swalWithBootstrapButtons.fire({
                     title: "Deleted!",
@@ -104,15 +93,30 @@ export default function Cart() {
 
 
     }
+
+
+    async function userCart() {
+        setIsLoading(true)
+        let { data } = await getLoggedUserCart();
+        setCartData(data)
+
+        console.log(data);
+
+        setIsLoading(false)
+
+        // console.log(cartData);
+    }
+
+
     useEffect(() => {
-        userCart();
-    }, [cartId])
+        userCart()
+    }, [])
 
     return <>
         <Helmet>
             <title>Shopping Cart</title>
         </Helmet>
-        {cartData  ?
+        {cartData ?
 
             <div className="bg-main-light p-4 w-75 mx-auto rounded shadow mb-5 my-4 cart-area ng-star-inserted">
                 <h3 className='text-main display-4 '>Shopping Cart</h3>
@@ -134,10 +138,10 @@ export default function Cart() {
                                     <h4 className='h5'>{prod.product.title.split(' ').slice(0, 3).join(" ")}</h4>
                                     <h6 className='text-main'>Price : {prod.price}EGP</h6>
                                     <div className="">
-                                    <button onClick={() => removeCartItem(prod.product.id)} className='btn btn-sm mx-0 btn-outline-danger '>
-                                        <i className='hov  font-sm fa-solid fas fa-trash'>
-                                        </i> Remove
-                                    </button>
+                                        <button onClick={() => removeCartItem(prod.product.id)} className='btn btn-sm mx-0 btn-outline-danger '>
+                                            <i className='hov  font-sm fa-solid fas fa-trash'>
+                                            </i> Remove
+                                        </button>
                                     </div>
                                 </div>
                                 <div className="col-md-3 my-3 d-flex justify-content-center align-items-center">
