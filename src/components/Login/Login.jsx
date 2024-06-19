@@ -6,6 +6,7 @@ import * as Yup from 'yup'
 import axios from 'axios'
 import { Helmet } from 'react-helmet'
 import { UserContext } from '../../Context/UserContext'
+import { CartContext } from '../../Context/CartContext'
 
 
 export default function Login() {
@@ -16,6 +17,8 @@ export default function Login() {
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
     const { setUserToken    , setUserData } = useContext(UserContext)
+    const { setHeaders  } = useContext(CartContext)
+
 
 
     async function loginSubmit(values) {
@@ -28,6 +31,9 @@ export default function Login() {
         if (data.message === 'success') {
             localStorage.setItem('userToken', data.token)
             setUserToken(data.token)
+            setHeaders({
+                token: data.token
+            })
             
             localStorage.setItem('userInfo' , JSON.stringify(data.user))
             setUserData(data.user)

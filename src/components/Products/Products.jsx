@@ -19,7 +19,8 @@ export default function Products() {
     const {setCount} = useContext(CartContext)
     async function addProductToCart(productId) {
         const response = await addToCart(productId);
-        if (response.data.status === 'success') {
+        console.log(response);
+        if (response.data?.status === 'success') {
             toast.success(response.data.message, {
 
                 className: "bg-main text-white ",
